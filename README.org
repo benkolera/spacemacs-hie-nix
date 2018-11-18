@@ -35,6 +35,9 @@ One thing that could be annoying for you is the lack of company support with
 dante. If that annoys you, you should probably extend the haskell layer with
 dante and set your completion backend to dante.
 
+PRs and feedback are very welcome if you find this useful but lacking in some
+way.
+
 ** Features:
 - syntax highlighting for [[https://github.com/haskell/haskell-mode][haskell source]], [[https://github.com/haskell/haskell-mode][cabal files]], [[https://github.com/bgamari/cmm-mode][C-- source]],
 - [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] & [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]] powered by [[https://github.com/emacs-lsp/lsp-haskell][lsp-haskell]] and [[https://github.com/haskell/haskell-ide-engine][haskell-ide-engine]]

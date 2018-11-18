@@ -6,6 +6,10 @@
 - [[#install][Install]]
   - [[#layer][Layer]]
   - [[#dependencies][Dependencies]]
+    - [[#binary-cache][Binary Cache]]
+      - [[#nixos][Nixos]]
+      - [[#non-nixos][Non-Nixos]]
+    - [[#nix-env-install][Nix Env Install]]
 - [[#key-bindings][Key bindings]]
   - [[#documentation][Documentation]]
   - [[#debug][Debug]]
@@ -62,12 +66,32 @@ add =hie-nix= to the existing =dotspacemacs-configuration-layers= list in this
 file.
 
 ** Dependencies
-You should also install the required haskell-ide-engine and tools via nix by running:
+You should also install the required haskell-ide-engine and tools via nix.
 
-#+BEGIN_SRC bash
-  cd ~/.emacs.d/private
-  nix-env -f default.nix -iA hie-spacemacs-bundle
-#+END_SRC
+*** Binary Cache
+    First, you should make sure https://hie-nix.cachix.org is in your binary cache
+    list otherwise you will wait a really long time for it to build! :)
+
+**** Nixos
+    If you are using nixos, add "https://hie-nix.cachix.org" to nix.binaryCaches
+    and "hie-nix.cachix.org-1:EjBSHzF6VmDnzqlldGXbi0RM3HdjfTU3yDRi9Pd0jTY=" to
+    nix.binaryCachePublicKeys.
+
+**** Non-Nixos
+     Installing the cachix binary and following the instructions at
+     https://hie-nix.cachix.org ought to work.
+
+*** Nix Env Install
+    Run this to install all of the dependencies into your user nix environment.
+    If the cache is setup properly, you should see some things being downloaded
+    from https://hie-nix.cachix.org and it should be pretty quick. If it starts
+    building and takes hours, go back a step or ask me for help. I'm usually
+    available on the freenode IRC in #qfpl.
+
+    #+BEGIN_SRC bash
+      cd ~/.emacs.d/private
+      nix-env -f default.nix -iA hie-spacemacs-bundle
+    #+END_SRC
 
 * Key bindings
 All Haskell specific bindings are prefixed with the major-mode leader ~SPC m~.

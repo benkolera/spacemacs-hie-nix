@@ -1,0 +1,167 @@
+#+TITLE: hie-nix Layer
+
+* Table of Contents                                       :TOC_4_gh:noexport:
+- [[#description][Description]]
+  - [[#features][Features:]]
+- [[#install][Install]]
+  - [[#layer][Layer]]
+  - [[#dependencies][Dependencies]]
+- [[#key-bindings][Key bindings]]
+  - [[#documentation][Documentation]]
+  - [[#debug][Debug]]
+  - [[#debug-buffer][Debug Buffer]]
+  - [[#repl][REPL]]
+  - [[#cabal-commands][Cabal commands]]
+  - [[#cabal-files][Cabal files]]
+  - [[#refactor][Refactor]]
+- [[#faq][FAQ]]
+  - [[#get-an-error-from-cabal-helper-when-hie-starts][Get an error from cabal helper when hie starts]]
+
+* Description
+This layer adds a hie + lsp setup that wraps commands up in nix-shell for the
+project. This is shamelessly copied from the existing haskell layer and culling
+all of the variability around dante/intero/etc. I don't really know all the layers
+that well at the moment, so starting with the simplest thing that worked seemed
+like the best idea. It can get fancier later if need be. It also wouldn't have
+happened without Sam Evan-Powell's awesome [[https://gist.github.com/sevanspowell/23b0135dae2834e59904a502b8a0eb5d][gist]].
+
+** Features:
+- syntax highlighting for [[https://github.com/haskell/haskell-mode][haskell source]], [[https://github.com/haskell/haskell-mode][cabal files]], [[https://github.com/bgamari/cmm-mode][C-- source]],
+- [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] & [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]] powered by [[https://github.com/emacs-lsp/lsp-haskell][lsp-haskell]] and [[https://github.com/haskell/haskell-ide-engine][haskell-ide-engine]]
+
+*This layer is under construction and powered by an emacs mode that Alan says
+himself _"This package is still under development, and is not recommended for daily use"_.
+Expect bugs and weird things and digging in to help out with the entire hie stack. :)*
+
+* Install
+** Layer
+To use this configuration layer, first clone it into ~/.emacs.d/private with the
+following command:
+
+#+BEGIN_SRC bash
+  cd ~/.emacs.d/private/
+  git clone git@github.com:benkolera/spacemacs-hie-nix.git hie-nix
+#+END_SRC
+
+and add the layer to your =~/.spacemacs=. You will need to
+add =hie-nix= to the existing =dotspacemacs-configuration-layers= list in this
+file.
+
+** Dependencies
+You should also install the required haskell-ide-engine and tools via nix by running:
+
+#+BEGIN_SRC bash
+  cd ~/.emacs.d/private
+  nix-env -f default.nix -iA hie-spacemacs-bundle
+#+END_SRC
+
+* Key bindings
+All Haskell specific bindings are prefixed with the major-mode leader ~SPC m~.
+
+Top-level commands are prefixed by ~SPC m~:
+
+| Key Binding | Description                                                         |
+|-------------+---------------------------------------------------------------------|
+| ~SPC m g g~ | go to definition or tag                                             |
+| ~SPC m g i~ | cycle the Haskell import lines or return to point (with prefix arg) |
+| ~SPC m F~   | format buffer using haskell-stylish                                 |
+
+** Documentation
+Documentation commands are prefixed by ~SPC m h~
+
+| Key Binding | Description                                                                |
+|-------------+----------------------------------------------------------------------------|
+| ~SPC m h d~ | find or generate Haddock documentation for the identifier under the cursor |
+| ~SPC m h f~ | do a helm-hoogle lookup                                                    |
+| ~SPC m h h~ | do a Hoogle lookup                                                         |
+| ~SPC m h H~ | do a local Hoogle lookup                                                   |
+| ~SPC m h i~ | gets information for the identifier under the cursor                       |
+| ~SPC m h t~ | gets the type of the identifier under the cursor                           |
+| ~SPC m h y~ | do a Hayoo lookup                                                          |
+
+** Debug
+Debug commands are prefixed by ~SPC m d~:
+
+| Key Binding | Description                                |
+|-------------+--------------------------------------------|
+| ~SPC m d a~ | abandon current process                    |
+| ~SPC m d b~ | insert breakpoint at function              |
+| ~SPC m d B~ | delete breakpoint                          |
+| ~SPC m d c~ | continue current process                   |
+| ~SPC m d d~ | start debug process, needs to be run first |
+| ~SPC m d n~ | next breakpoint                            |
+| ~SPC m d N~ | previous breakpoint                        |
+| ~SPC m d p~ | previous breakpoint                        |
+| ~SPC m d r~ | refresh process buffer                     |
+| ~SPC m d s~ | step into the next function                |
+| ~SPC m d t~ | trace the expression                       |
+
+** Debug Buffer
+
+| Key Binding | Description                                 |
+|-------------+---------------------------------------------|
+| ~RET~       | select object at the point                  |
+| ~a~         | abandon current computation                 |
+| ~b~         | break on function                           |
+| ~c~         | continue the current computation            |
+| ~d~         | delete object at the point                  |
+| ~i~         | step into the next function                 |
+| ~r~         | refresh the debugger buffer                 |
+| ~s~         | go to next step to inspect bindings         |
+| ~S~         | go to previous step to inspect the bindings |
+| ~t~         | trace the expression                        |
+
+** REPL
+REPL commands are prefixed by ~SPC m s~:
+
+| Key Binding | Description                                     |
+|-------------+-------------------------------------------------|
+| ~SPC m s b~ | load or reload the current buffer into the REPL |
+| ~SPC m s c~ | clear the REPL                                  |
+| ~SPC m s s~ | show the REPL without switching to it           |
+| ~SPC m s S~ | show and switch to the REPL                     |
+
+** Cabal commands
+Cabal commands are prefixed by ~SPC m c~:
+
+| Key Binding | Description                                                |
+|-------------+------------------------------------------------------------|
+| ~SPC m c a~ | cabal actions                                              |
+| ~SPC m c b~ | build the current cabal project, i.e. invoke =cabal build= |
+| ~SPC m c c~ | compile the current project, i.e. invoke =ghc=             |
+| ~SPC m c v~ | visit the cabal file                                       |
+
+** Cabal files
+These commands are available in a cabal file.
+
+| Key Binding | Description                                 |
+|-------------+---------------------------------------------|
+| ~SPC m d~   | add a dependency to the project             |
+| ~SPC m b~   | go to benchmark section                     |
+| ~SPC m e~   | go to executable section                    |
+| ~SPC m t~   | go to test-suite section                    |
+| ~SPC m m~   | go to exposed modules                       |
+| ~SPC m l~   | go to library section                       |
+| ~SPC m n~   | go to next subsection                       |
+| ~SPC m p~   | go to previous subsection                   |
+| ~SPC m s c~ | clear the REPL                              |
+| ~SPC m s s~ | show the REPL without switching to it       |
+| ~SPC m s S~ | show and switch to the REPL                 |
+| ~SPC m N~   | go to next section                          |
+| ~SPC m P~   | go to previous section                      |
+| ~SPC m f~   | find or create source-file under the cursor |
+
+** Refactor
+Refactor commands are prefixed by ~SPC m r~:
+
+| Key Binding | Description                            |
+|-------------+----------------------------------------|
+| ~SPC m r R~ | Rename using the lsp server            |
+| ~SPC m r f~ | reformat the buffer via the lsp server |
+| ~SPC m r a~ | apply sideline code action via lsp     |
+
+* FAQ
+** Get an error from cabal helper when hie starts
+   That normally means that you don't have the cabal (library) version that
+   hie needs to read in the project data. Add it by overriding your tool deps
+   in your shell.nix.

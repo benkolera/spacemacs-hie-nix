@@ -20,6 +20,7 @@
   - [[#refactor][Refactor]]
 - [[#faq][FAQ]]
   - [[#get-an-error-from-cabal-helper-when-hie-starts][Get an error from cabal helper when hie starts]]
+  - [[#cant-find-testing-or-benchmark-dependencies][Can't find testing or benchmark dependencies]]
 - [[#known-issues][Known Issues]]
   - [[#hoogle-support][Hoogle Support]]
 
@@ -206,6 +207,11 @@ Refactor commands are prefixed by ~SPC m r~:
    haskellPackages.Cabal_2_4_0_1 like value. The version that you need will be
    in the cabal helper error output, which should be in the hie-stderr emacs
    buffer.
+** Can't find testing or benchmark dependencies
+   HIE still relies on the old-school cabal configure, so if you use the new-style
+   stuff you will need to `cabal configure --enable-tests` etc to get the testing
+   deps in there. If you have never done this in the project, hie will just run
+   a `cabal configure` for you and miss the extra stuff.
 
 * Known Issues
 ** Hoogle Support

@@ -151,7 +151,8 @@
         "t" 'haskell-debug/trace)
 
       ;; configure C-c C-l so it doesn't throw any errors
-      (bind-key "C-c C-l" 'haskell-process-load-file haskell-mode-map)
+      ;; bk: This is crashing things in here. Ignore it till later.
+      ;; (bind-key "C-c C-l" 'haskell-process-load-file haskell-mode-map)
 
       ;; Switch back to editor from REPL
       (spacemacs/set-leader-keys-for-major-mode 'haskell-interactive-mode

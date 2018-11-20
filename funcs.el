@@ -1,7 +1,8 @@
 (defun hie-nix//default-nix-wrapper (args)
-  (let ((command (append
+  (let* ((shell-args (if spacemacs/lsp-haskell-nix-shell-args spacemacs/lsp-haskell-nix-shell-args ""))
+        (command (append
                   ;; Change this to match your home directory/preferences
-                  (append (list "nix-shell" "-I" "." "--command" )
+                  (append (list "nix-shell" "-I" ".") shell-args (list "--command" )
                           (list (mapconcat 'identity args " "))
                           )
                   (list (nix-current-sandbox)))))

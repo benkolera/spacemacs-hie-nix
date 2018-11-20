@@ -36,11 +36,13 @@
     :init
     (progn
       (add-hook 'flycheck-mode-hook 'flycheck-haskell-configure)
-      (setq
-       lsp-haskell-process-wrapper-function #'hie-nix//default-nix-wrapper
-       flycheck-command-wrapper-function #'hie-nix//default-nix-wrapper
-       flycheck-executable-find (lambda (cmd) (nix-executable-find (nix-current-sandbox) cmd))
-       )
+      (message "NIX WRAPPED %s" spacemacs/lsp-haskell-nix-wrapped)
+      (when spacemacs/lsp-haskell-nix-wrapped
+        (setq
+         lsp-haskell-process-wrapper-function #'hie-nix//default-nix-wrapper
+         flycheck-command-wrapper-function #'hie-nix//default-nix-wrapper
+         flycheck-executable-find (lambda (cmd) (nix-executable-find (nix-current-sandbox) cmd))
+         ))
     )))
 
 (defun hie-nix/init-haskell-mode ()
@@ -71,9 +73,11 @@
        ;; Disable haskell-stylish-on-save, as it breaks flycheck highlighting.
        ;; NOTE: May not be true anymore - taksuyu 2015-10-06
        haskell-stylish-on-save nil
-       haskell-process-wrapper-function #'hie-nix//haskell-nix-wrapper
        haskell-tags-on-save t
        )
+
+      (when spacemacs/lsp-haskell-nix-wrapped
+        (setq haskell-process-wrapper-function #'hie-nix//haskell-nix-wrapper))
 
       (dolist (mode haskell-modes)
         (spacemacs/declare-prefix-for-mode mode "mg" "haskell/navigation")
@@ -185,7 +189,6 @@
         (kbd "RET") 'haskell-interactive-mode-return)
       (evil-define-key 'normal haskell-interactive-mode-map
         (kbd "RET") 'haskell-interactive-mode-return))
-    (message "HASKELL INIT DONE")
     ))
 
 ;;; packages.el ends here

@@ -17,11 +17,16 @@
     (flycheck-haskell :requires flycheck)
     nix-sandbox
     haskell-mode
+    company-lsp
     (lsp-haskell :requires haskell-mode :location (recipe :fetcher github :repo "emacs-lsp/lsp-haskell"))
     ))
 
 (defun hie-nix/post-init-flycheck ()
   (add-hook 'haskell-mode-hook 'flycheck-mode))
+
+; This doesn't work. Just brings up hippie expand suggestions .
+;(defun hie-nix/post-init-company-lsp ()
+;  (spacemacs|add-company-backends :backend company-lsp :modes haskell-mode))
 
 (defun hie-nix/init-nix-sandbox ()
   (use-package nix-sandbox))

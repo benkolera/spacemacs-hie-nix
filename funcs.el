@@ -11,7 +11,7 @@
       command)))
 
 (defun hie-nix//haskell-nix-wrapper (args)
-  (apply hie-nix//default-nix-wrapper (list (append args (list "--ghc-option" "-Wwarn"))))
+  (apply #'hie-nix//default-nix-wrapper (list (append args (list "--ghc-option" "-Wwarn"))))
   )
 
 (defun hie-nix//disable-electric-indent ()

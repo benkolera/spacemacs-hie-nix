@@ -33,7 +33,7 @@
 
 (defun hie-nix/init-lsp-haskell ()
   (use-package lsp-haskell
-    :init (add-hook 'haskell-mode-hook #'lsp-haskell-enable)))
+    :init (add-hook 'haskell-mode-hook #'lsp)))
 
 (defun hie-nix/init-flycheck-haskell ()
   (use-package flycheck-haskell
@@ -75,6 +75,7 @@
        ;; Better import handling
        haskell-process-suggest-remove-import-lines t
        haskell-process-auto-import-loaded-modules t
+       haskell-process-type 'cabal-new-repl
        ;; Disable haskell-stylish-on-save, as it breaks flycheck highlighting.
        ;; NOTE: May not be true anymore - taksuyu 2015-10-06
        haskell-stylish-on-save nil

@@ -75,6 +75,7 @@
        ;; Better import handling
        haskell-process-suggest-remove-import-lines t
        haskell-process-auto-import-loaded-modules t
+       haskell-process-type 'cabal-new-repl
        ;; Disable haskell-stylish-on-save, as it breaks flycheck highlighting.
        ;; NOTE: May not be true anymore - taksuyu 2015-10-06
        haskell-stylish-on-save nil

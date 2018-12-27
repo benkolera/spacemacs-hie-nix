@@ -33,7 +33,7 @@
 
 (defun hie-nix/init-lsp-haskell ()
   (use-package lsp-haskell
-    :init (add-hook 'haskell-mode-hook #'lsp-haskell-enable)))
+    :init (add-hook 'haskell-mode-hook #'lsp)))
 
 (defun hie-nix/init-flycheck-haskell ()
   (use-package flycheck-haskell

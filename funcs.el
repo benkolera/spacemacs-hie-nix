@@ -7,7 +7,6 @@
                           )
                   (list (nix-current-sandbox)))))
     (progn
-      (message "hie-nix command: %s" (mapconcat 'identity command " "))
       command)))
 
 (defun hie-nix//haskell-nix-wrapper (args)

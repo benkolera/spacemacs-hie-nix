@@ -17,7 +17,6 @@
     (flycheck-haskell :requires flycheck)
     nix-sandbox
     haskell-mode
-    company-lsp
     (lsp-haskell :requires haskell-mode :location (recipe :fetcher github :repo "emacs-lsp/lsp-haskell"))
     ))
 
@@ -33,7 +32,11 @@
 
 (defun hie-nix/init-lsp-haskell ()
   (use-package lsp-haskell
-    :init (add-hook 'haskell-mode-hook #'lsp-haskell-enable)))
+    :init
+    (progn
+      ; Some nix shells can be super slow with hie-nix and reflex platform
+      (setq lsp-response-timeout 30)
+      (add-hook 'haskell-mode-hook #'lsp))))
 
 (defun hie-nix/init-flycheck-haskell ()
   (use-package flycheck-haskell
@@ -41,7 +44,6 @@
     :init
     (progn
       (add-hook 'flycheck-mode-hook 'flycheck-haskell-configure)
-      (message "NIX WRAPPED %s" spacemacs/lsp-haskell-nix-wrapped)
       (when spacemacs/lsp-haskell-nix-wrapped
         (setq
          lsp-haskell-process-wrapper-function #'hie-nix//default-nix-wrapper
